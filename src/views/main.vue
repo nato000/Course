@@ -86,7 +86,7 @@
 		</div>
 	</div>
 	</div>
-
+<br><br><br><br>
 <div class="offers">
 		<div class="container">
 			<div class="row">
@@ -110,7 +110,7 @@
 							</div>
 							<div class="col-lg-6">
 								<div class="offers_content">
-									<div class="offers_price">{{this.item.price}}<span>per night</span></div>
+									<div class="offers_price" ><span> {{this.item.price}}per night</span></div>
 									<div class="rating_r rating_r_4 offers_rating">
 										<i></i>
 										<i></i>

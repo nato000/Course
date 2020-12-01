@@ -19,9 +19,7 @@
   },
   "homepage": "https://github.com/nato000/course#readme",
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.4.0",
-    "@vue/cli-plugin-router": "~4.4.0",
-    "@vue/cli-service": "~4.4.0",
+  
     "vue-template-compiler": "^2.6.11",
     "@webpack-cli/serve": "^1.1.0",
     "webpack": "^4.25.1",
