@@ -1,7 +1,23 @@
 <template>
-  <div>
+  
     <div class="super_container">
 	
+	<div class="container fill_height">
+			<div class="row fill_height">
+				<div class="col fill_height">
+
+					<!-- Search Tabs -->
+
+					<div class="search_tabs_container">
+						<div class="search_tabs d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-between justify-content-start">
+							<!-- <div class="search_tab active d-flex flex-row align-items-center justify-content-lg-center justify-content-start"><img src="images/suitcase.png" alt=""><span>hotels</span></div> 
+							<div class="search_tab d-flex flex-row align-items-center justify-content-lg-center justify-content-start"><img src="images/bus.png" alt="">car rentals</div> -->
+							<div class="search_tab d-flex flex-row align-items-center justify-content-lg-center justify-content-start"><img src="images/departure.png" alt="">flights</div>
+							<!-- <div class="search_tab d-flex flex-row align-items-center justify-content-lg-center justify-content-start"><img src="images/island.png" alt="">trips</div> 
+							<div class="search_tab d-flex flex-row align-items-center justify-content-lg-center justify-content-start"><img src="images/cruise.png" alt="">cruises</div> 
+							<div class="search_tab d-flex flex-row align-items-center justify-content-lg-center justify-content-start"><img src="images/diving.png" alt="">activities</div>  -->
+						</div>		
+					</div>
         <div class="search_panel active">
 						<form action="#" id="search_form_1" class="search_panel_content d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-between justify-content-start">
               <div class="search_item">
@@ -43,39 +59,43 @@
 								</select>
 							</div>
 							<!-- <button class="button search_button" onClick='location.href="offers.html"' @click="q">search<span></span><span></span><span></span></button> 
-                 <center v-if='show == true'>
-                    <div class="block1" v-for="item in flights" v-bind:key="item.id">
+                 		<center v-if='show == true'>
+                    	<div class="block1" v-for="item in flights" v-bind:key="item.id">
                         From:{{item.cityFrom}} <br>
                         To:{{item.cityTo}} <br>
                         fly durations:{{item.fly_duration}} <br>
                         price:{{this.item.price}} <br>
                         routes:{{item.routes}} <br>
                         <br>
-                      <button class="btn" @click="show = false">roll up</button><br><br>
+                      	<button class="btn" @click="show = false">roll up</button><br><br>
                       
                       <button class="button search_button"  @click="q" >search<span></span><span></span><span></span></button>
 
- <router-link to= "/rez/" class="tablinks button search_button" tag="button" @click="q" >
+ 				<router-link to= "/rez/" class="tablinks button search_button" tag="button" @click="q" >
                   SEARCH
-              </router-link>
+              	</router-link>
 
                     </div>
                   </center>-->
               
             <button class="button search_button"  @click="q" >search<span></span><span></span><span></span></button>
     
+               </form>
               
-              
+		</div>
+		</div>
+	</div>
+	</div>
 
-
-<div class="offers" v-for="item in flights" v-bind:key="item.id">
+<div class="offers">
 		<div class="container">
 			<div class="row">
 				<div class="col text-center">
 					<h2 class="section_title">the best offers with rooms</h2>
 				</div>
 			</div>
-			<div class="row offers_items">
+			<!-- <div v-if='show == true'> -->
+			<div class="row offers_items" v-for="item in flights" v-bind:key="item.id">
 
 				<!-- Offers Item -->
 				<div class="col-lg-6 offers_col">
@@ -227,13 +247,15 @@
 
 			</div>
 		</div>
-	</div> 
+	</div>
+	
+	
+	
 
 
-            </form>
+           
           </div>
-        </div>
-      </div>
+        
          
 </template>
 
