@@ -1,7 +1,7 @@
 <template>
   
     <div class="super_container">
-	
+	<div class="search">
 	<div class="container fill_height">
 			<div class="row fill_height">
 				<div class="col fill_height">
@@ -30,11 +30,11 @@
 							</div>
 							<div class="search_item">
 								<div>Departure</div>
-								<input type="text" class="check_in search_input" placeholder="DD-MM-YYYY" required="required" v-model="date1">
+								<input type="text" class="check_in search_input" placeholder="DD/MM/YYYY" required="required" v-model="date1">
 							</div>
 							<div class="search_item">
 								<div>return</div>
-								<input type="text" class="check_out search_input" placeholder="DD-MM-YYYY" required="required" v-model="date2">
+								<input type="text" class="check_out search_input" placeholder="DD/MM/YYYY" required="required" v-model="date2">
 							</div>
 							<div class="search_item">
 								<div>adults</div>
@@ -81,12 +81,13 @@
             <button class="button search_button"  @click="q" >search<span></span><span></span><span></span></button>
     
                </form>
-              
+        </div>
 		</div>
 		</div>
 	</div>
 	</div>
 <br><br><br><br>
+<div class="super_container">
 <div class="offers">
 		<div class="container">
 			<div class="row">
@@ -94,7 +95,7 @@
 					<h2 class="section_title">the best offers with rooms</h2>
 				</div>
 			</div>
-			<!-- <div v-if='show == true'> -->
+			<div v-if='show == true'>
 			<div class="row offers_items" v-for="item in flights" v-bind:key="item.id">
 
 				<!-- Offers Item -->
@@ -105,12 +106,12 @@
 								<div class="offers_image_container">
 									<!-- Image by https://unsplash.com/@kensuarez -->
 									<div class="offers_image_background" style="background-image:url(images/offer_1.jpg)"></div>
-									<div class="offer_name"><a href="#">grand castle</a></div>
+									<div class="offer_name"><a href="#">{{item.cityFrom}} -> {{item.cityTo}}</a></div>
 								</div>
 							</div>
 							<div class="col-lg-6">
 								<div class="offers_content">
-									<div class="offers_price" ><span> {{this.item.price}}per night</span></div>
+									<div class="offers_price" >{{item.price}}<span></span></div>
 									<div class="rating_r rating_r_4 offers_rating">
 										<i></i>
 										<i></i>
@@ -135,12 +136,12 @@
 				</div>
 				
 				<!-- Offers Item -->
-				<div class="col-lg-6 offers_col">
+				<!-- <div class="col-lg-6 offers_col">
 					<div class="offers_item">
 						<div class="row">
 							<div class="col-lg-6">
 								<div class="offers_image_container">
-									<!-- Image by Egzon Bytyqi -->
+									Image by Egzon Bytyqi
 									<div class="offers_image_background" style="background-image:url(images/offer_2.jpg)"></div>
 									<div class="offer_name"><a href="#">turkey hills</a></div>
 								</div>
@@ -171,13 +172,13 @@
 					</div>
 				</div>
 
-				<!-- Offers Item -->
+				Offers Item
 				<div class="col-lg-6 offers_col">
 					<div class="offers_item">
 						<div class="row">
 							<div class="col-lg-6">
 								<div class="offers_image_container">
-									<!-- Image by https://unsplash.com/@nevenkrcmarek -->
+									Image by https://unsplash.com/@nevenkrcmarek
 									<div class="offers_image_background" style="background-image:url(images/offer_3.jpg)"></div>
 									<div class="offer_name"><a href="#">island dream</a></div>
 								</div>
@@ -208,13 +209,13 @@
 					</div>
 				</div>
 
-				<!-- Offers Item -->
+				Offers Item
 				<div class="col-lg-6 offers_col">
 					<div class="offers_item">
 						<div class="row">
 							<div class="col-lg-6">
 								<div class="offers_image_container">
-									<!-- Image by https://unsplash.com/@mantashesthaven -->
+									Image by https://unsplash.com/@mantashesthaven
 									<div class="offers_image_background" style="background-image:url(images/offer_4.jpg)"></div>
 									<div class="offer_name"><a href="#">travel light</a></div>
 								</div>
@@ -243,11 +244,12 @@
 							</div>
 						</div>
 					</div>
-				</div>
-
+				</div> -->
 			</div>
 		</div>
 	</div>
+</div>
+</div>
 	
 	
 	
@@ -272,7 +274,6 @@ import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Vuex from 'vuex'
-
 
 
 export default {
