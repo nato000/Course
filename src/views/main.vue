@@ -60,13 +60,14 @@
 								<div class="search_item">
 								<div>type</div>
 								<!--  -->
-								<select name="type" id="type" class="dropdown_item_select search_input" v-model="type">
-									<option>round</option>
-									<option>oneway</option>
+								<select name="type" id="Type" class="dropdown_item_select search_input" v-model="type">
+									<option value="1">round</option>
+									<option value="2">oneway</option>
 								</select>
+								 <span id="r" v-bind="a"></span>
 							</div>
 										              
-            <button class="button search_button"  @click.prevent="q" >search<span></span><span></span><span></span></button>
+            <button class="button search_button" onclick="Func()" @click.prevent="q" >search<span></span><span></span><span></span></button>
     				
                </form>
         </div>
@@ -137,6 +138,23 @@ export default {
 }
 </script>
 
+
+<script>
+function Func() {
+  var typ, g; 
+  typ = document.getElementById('type');
+  
+if (typ == round ){
+	 g = '&nights_in_dst_from='+8+'&nights_in_dst_to='+8;
+	 console.log(g);
+}
+else {
+	g = '';
+	console.log(g);
+}
+}
+</script>
+
 <script>
 import Vue from 'vue'
 import axios from 'axios'
@@ -156,11 +174,12 @@ export default {
 		adults:'',
 		children:'',
 		type:'',
+		a:'',
         air:[],
         show: false
     }
   },
-  
+ 
   methods: {
     q:function(){
    axios.get('https://api.skypicker.com/locations?term='+this.city1+'&locale=en-US&location_types=city&limit=10&active_only=true&sort=name')
@@ -170,7 +189,7 @@ export default {
    .then((response) => {
     let cityTo = response.data.locations[0].code;
     console.log(cityTo);
-    axios.get('https://api.skypicker.com/flights?fly_from='+cityFrom+'&fly_to='+cityTo+'&date_from='+this.date1+'&return_from='+this.date2+'&adults='+this.adults+'&children='+this.children+'&flight_type='+this.type+'&partner=picky')
+    axios.get('https://api.skypicker.com/flights?fly_from='+cityFrom+'&fly_to='+cityTo+'&date_from='+this.date1+'&return_from='+this.date2+'&adults='+this.adults+'&children='+this.children+'&flight_type='+this.type+'&partner=picky'+g)
     .then((response) => {
      console.log(response.data);
      this.flights =  response.data.data.slice(1, 30);
@@ -185,3 +204,4 @@ export default {
 <style>
 
 </style>
+ 
