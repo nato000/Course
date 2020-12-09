@@ -35,6 +35,7 @@
 								<div>adults</div>
 								<!--  -->
 								<select name="adults" id="adults_1" class="dropdown_item_select search_input" v-model="adults">
+									<option>0</option>
 									<option>1</option>
 									<option>2</option>
 									<option>3</option>
@@ -47,6 +48,7 @@
 								<div>children</div>
 								<!--  -->
 								<select name="children" id="children_1" class="dropdown_item_select search_input" v-model="children">
+									<option>0</option>
 									<option>1</option>
 									<option>2</option>
 									<option>3</option>
@@ -55,9 +57,17 @@
 									<option>6</option>
 								</select>
 							</div>
-					              
-            <button class="button search_button"  @click="q" >search<span></span><span></span><span></span></button>
-    
+								<div class="search_item">
+								<div>type</div>
+								<!--  -->
+								<select name="type" id="type" class="dropdown_item_select search_input" v-model="type">
+									<option>round</option>
+									<option>oneway</option>
+								</select>
+							</div>
+										              
+            <button class="button search_button"  @click.prevent="q" >search<span></span><span></span><span></span></button>
+    				
                </form>
         </div>
 		</div>
@@ -65,15 +75,16 @@
 	</div>
 	</div>
 <br><br><br><br>
+	<div v-if='show == true'>
 <div class="super_container">
 <div class="offers">
 		<div class="container">
 			<div class="row">
 				<div class="col text-center">
-					<h2 class="section_title">the best offers with rooms</h2>
+					<h2 class="section_title">offers</h2>
 				</div>
 			</div>
-			<div v-if='show == true'>
+		
 			<div class="row offers_items" v-for="item in flights" v-bind:key="item.id">
 
 				<!-- Offers Item -->
@@ -90,15 +101,15 @@
 							<div class="col-lg-6">
 								<div class="offers_content">
 									<div class="offers_price" >{{item.price}}€<span></span></div>
-									
+									<p class="offers_text"></p>
 									<p class="offers_text">Fly duration: {{item.fly_duration}} </p>
 									<p class="offers_text">Airline: {{item.airlines}} </p>
 									<p class="offers_text">Availability: {{item.availability.seats}} </p>
-									<p class="offers_text">Bag price: 1:{{item.bags_price}} <br> 2:{{item.bags_price}} </p>
+									<p class="offers_text">Bag price: 1:{{item.bags_price}} <br>  </p>
 									<div class="offers_icons">
 									
 									</div>
-									<div class="offers_link"><a v-bind:href= "item.deep_link" >Buy</a>
+									<div class="button search_button"><a v-bind:href= "item.deep_link" >Buy</a>
 								
 									</div>
 									
@@ -144,6 +155,7 @@ export default {
         date2:'',
 		adults:'',
 		children:'',
+		type:'',
         air:[],
         show: false
     }
@@ -151,14 +163,22 @@ export default {
   
   methods: {
     q:function(){
-    axios.get('https://api.skypicker.com/flights?fly_from='+this.city1+'&fly_to='+this.city2+'&date_from='+this.date1+'&return_from='+this.date2+'&adults='+this.adults+'&children='+this.children+'&partner=picky')
-	//  this.adu this.chld
-	  .then((response) => {
-        console.log(response.data);
-        this.flights =  response.data.data.slice(1, 30);
-        this.show = true;
-      })
-  },
+   axios.get('https://api.skypicker.com/locations?term='+this.city1+'&locale=en-US&location_types=city&limit=10&active_only=true&sort=name')
+   .then((response) => {
+  let cityFrom = response.data.locations[0].code;
+  axios.get('https://api.skypicker.com/locations?term='+this.city2+'&locale=en-US&location_types=city&limit=10&active_only=true&sort=name')
+   .then((response) => {
+    let cityTo = response.data.locations[0].code;
+    console.log(cityTo);
+    axios.get('https://api.skypicker.com/flights?fly_from='+cityFrom+'&fly_to='+cityTo+'&date_from='+this.date1+'&return_from='+this.date2+'&adults='+this.adults+'&children='+this.children+'&flight_type='+this.type+'&partner=picky')
+    .then((response) => {
+     console.log(response.data);
+     this.flights =  response.data.data.slice(1, 30);
+     this.show = true;
+    })
+   })
+   })
+}
   }
 }
 </script>

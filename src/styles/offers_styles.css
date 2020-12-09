@@ -1400,7 +1400,7 @@ section
 	position: absolute;
 	left: 0;
 	bottom: 27px;
-	width: 180px;
+	width: 200%;
 	height: 33px;
 	background: #fa9e1b;
 	overflow: hidden;
@@ -1408,7 +1408,7 @@ section
 .offer_name a
 {
 	display: block;
-	font-size: 16px;
+	font-size: 10px;
 	font-weight: 700;
 	color: #FFFFFF;
 	text-transform: uppercase;

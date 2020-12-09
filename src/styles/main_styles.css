@@ -1068,11 +1068,15 @@ section
 }
 .search_item:nth-child(5)
 {
-	width: 4.999%;
+	width: 5.599%;
 }
 .search_item:nth-child(6)
 {
-	width: 4.999%;
+	width: 5.599%;
+}
+.search_item:nth-child(7)
+{
+	width: 5.599%;
 }
 .search_item div
 {
