@@ -61,20 +61,20 @@
 								<div>type</div>
 								<!--  -->
 								<select name="type" id="Type" class="dropdown_item_select search_input" v-model="type">
-									<option value="1">round</option>
-									<option value="2">oneway</option>
+									<option value="round">round</option>
+									<option value="oneway">oneway</option>
 								</select>
 								 <span id="r" v-bind="a"></span>
 							</div>
 										              
-            <button class="button search_button" onclick="Func()" @click.prevent="q" >search<span></span><span></span><span></span></button>
-    				
+            <!-- <button class="button search_button" onclick = "Func()"  @click.prevent="q" >search<span></span><span></span><span></span></button>  onclick = "Func()"-->
+    		<input id="clickMe" class="button search_button" type="button" value="search"  onclick = "_Func()" @click.prevent="q" />		 
                </form>
         </div>
 		</div>
 		</div>
 	</div>
-	</div>
+	</div>     
 <br><br><br><br>
 	<div v-if='show == true'>
 <div class="super_container">
@@ -140,12 +140,13 @@ export default {
 
 
 <script>
-function Func() {
-  var typ, g; 
-  typ = document.getElementById('type');
+var select = document.querySelector('select')
+select.addEventListener('change',_Func)
+function _Func() {
+    var type = select.value;
   
-if (typ == round ){
-	 g = '&nights_in_dst_from='+8+'&nights_in_dst_to='+8;
+if (type === "round"){
+	g = '&nights_in_dst_from='+8+'&nights_in_dst_to='+8;
 	 console.log(g);
 }
 else {
@@ -153,6 +154,8 @@ else {
 	console.log(g);
 }
 }
+ $("_Func").click(_Func);
+
 </script>
 
 <script>
@@ -175,10 +178,13 @@ export default {
 		children:'',
 		type:'',
 		a:'',
+	
         air:[],
         show: false
     }
   },
+ 
+
  
   methods: {
     q:function(){
@@ -199,7 +205,7 @@ export default {
    })
 }
   }
-}
+} 
 </script>
 <style>
 
