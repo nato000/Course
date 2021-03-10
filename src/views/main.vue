@@ -23,18 +23,25 @@
 								<div>to</div>
 								<input type="text" class="to search_input" placeholder="To" required="required" v-model="city2">
 							</div>
+	
 							<div class="search_item">
-								<div>Departure</div>
-								<input type="text" class="check_in search_input" placeholder="DD/MM/YYYY" required="required" v-model="date1">
+								<div>Date</div>
+									<el-date-picker
+									v-model="value1"
+									type="daterange"
+									range-separator="To"
+									start-placeholder="Start date"
+									end-placeholder="End date"
+									format="dd/MM/yyyy"
+      								value-format="dd/MM/yyyy">
+								</el-date-picker>
+
 							</div>
-							<div class="search_item">
-								<div>return</div>
-								<input type="text" class="check_out search_input" placeholder="DD/MM/YYYY" required="required" v-model="date2">
-							</div>
-							<div class="search_item">
+
+						 <div class="search_item">
 								<div>adults</div>
-								<!--  -->
-								<select name="adults" id="adults_1" class="dropdown_item_select search_input" v-model="adults">
+								
+								<select name="adults" id="adults_1" class="dropdown_item_select search_input"  v-model="adults">
 									<option>0</option>
 									<option>1</option>
 									<option>2</option>
@@ -43,10 +50,10 @@
 									<option>5</option>
 									<option>6</option>
 								</select>
-							</div>
+							</div> 
 							<div class="search_item">
 								<div>children</div>
-								<!--  -->
+								
 								<select name="children" id="children_1" class="dropdown_item_select search_input" v-model="children">
 									<option>0</option>
 									<option>1</option>
@@ -56,19 +63,19 @@
 									<option>5</option>
 									<option>6</option>
 								</select>
-							</div>
-								<div class="search_item">
+							</div> 
+
+								 <div class="search_item">
 								<div>type</div>
-								<!--  -->
+								
 								<select name="type" id="Type" class="dropdown_item_select search_input" v-model="type">
 									<option value="round">round</option>
 									<option value="oneway">oneway</option>
 								</select>
 								 <span id="r" v-bind="a"></span>
-							</div>
+							</div> 
 										              
-            <!-- <button class="button search_button" onclick = "Func()"  @click.prevent="q" >search<span></span><span></span><span></span></button>  onclick = "Func()"-->
-    		<input id="clickMe" class="button search_button" type="button" value="search"  onclick = "_Func()" @click.prevent="q" />		 
+                		<input id="clickMe" class="button search_button" type="button" value="search" @click.prevent="_Func();q();" />		 
                </form>
         </div>
 		</div>
@@ -126,44 +133,14 @@
 </div>
 </div>
 </div>
-        
-         
+              
 </template>
 
-
-
 <script>
-export default {
-  name: 'main'
-}
-</script>
 
-
-<script>
-var select = document.querySelector('select')
-select.addEventListener('change',_Func)
-function _Func() {
-    var type = select.value;
-  
-if (type === "round"){
-	g = '&nights_in_dst_from='+8+'&nights_in_dst_to='+8;
-	 console.log(g);
-}
-else {
-	g = '';
-	console.log(g);
-}
-}
- $("_Func").click(_Func);
-
-</script>
-
-<script>
-import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Vuex from 'vuex'
-
 
 export default {
   name: 'main',
@@ -178,36 +155,49 @@ export default {
 		children:'',
 		type:'',
 		a:'',
-	
+		g:'',
+		value1: '',
+       
         air:[],
         show: false
     }
   },
  
-
- 
   methods: {
-    q:function(){
-   axios.get('https://api.skypicker.com/locations?term='+this.city1+'&locale=en-US&location_types=city&limit=10&active_only=true&sort=name')
-   .then((response) => {
-  let cityFrom = response.data.locations[0].code;
-  axios.get('https://api.skypicker.com/locations?term='+this.city2+'&locale=en-US&location_types=city&limit=10&active_only=true&sort=name')
-   .then((response) => {
-    let cityTo = response.data.locations[0].code;
-    console.log(cityTo);
-    axios.get('https://api.skypicker.com/flights?fly_from='+cityFrom+'&fly_to='+cityTo+'&date_from='+this.date1+'&return_from='+this.date2+'&adults='+this.adults+'&children='+this.children+'&flight_type='+this.type+'&partner=picky'+g)
-    .then((response) => {
-     console.log(response.data);
-     this.flights =  response.data.data.slice(1, 30);
-     this.show = true;
-    })
-   })
-   })
-}
-  }
+    q(){
+		axios.get('https://api.skypicker.com/locations?term='+this.city1+'&locale=en-US&location_types=city&limit=10&active_only=true&sort=name')
+		.then((response) => {
+		let cityFrom = response.data.locations[0].code;
+		axios.get('https://api.skypicker.com/locations?term='+this.city2+'&locale=en-US&location_types=city&limit=10&active_only=true&sort=name')
+		.then((response) => {
+			let cityTo = response.data.locations[0].code;
+			console.log(cityTo);
+			axios.get('https://api.skypicker.com/flights?fly_from='+cityFrom+'&fly_to='+cityTo+'&date_from='+this.value1[0]+'&return_from='+this.value1[1]+'&adults='+this.adults+'&children='+this.children+'&flight_type='+this.type+'&partner=picky'+this.g)
+			.then((response) => {
+			console.log(response.data);
+			this.flights =  response.data.data.slice(1, 30);
+			console.log(this.flights);
+			this.show = true;
+			})
+		})
+		})
+	},
+	_Func() {
+		if (this.type === "round"){
+			this.g = '&nights_in_dst_from='+8+'&nights_in_dst_to='+8;
+			console.log(this.g);
+		}
+		else {
+			this.g = '';
+			console.log(this.g);
+		}
+		}
+  },
+  mounted() {
+// var select = document.querySelector('select')
+// select.addEventListener('change',_Func)
+// $("_Func").click(_Func);
+  },
+ 
 } 
 </script>
-<style>
-
-</style>
- 
