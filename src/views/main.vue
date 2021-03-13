@@ -17,11 +17,11 @@
 						<form action="#" id="search_form_1" class="search_panel_content d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-between justify-content-start">
               <div class="search_item">
 								<div>from</div>
-								<input type="text" class="from search_input" placeholder="From" required="required" v-model="city1">
+								<input type="text" class="from search_input" placeholder="From" required="required" autocomplete="on" v-model="city1">
 							</div>
 							<div class="search_item">
 								<div>to</div>
-								<input type="text" class="to search_input" placeholder="To" required="required" v-model="city2">
+								<input type="text" class="to search_input" placeholder="To" required="required" autocomplete="on" v-model="city2">
 							</div>
 	
 							<div class="search_item">
@@ -75,19 +75,38 @@
 								 <span id="r" v-bind="a"></span>
 							</div> 
 										              
-                		<input id="clickMe" class="button search_button" type="button" value="search" @click.prevent="_Func();q();" />		 
-               </form>
+                				 
+               			<v-btn id="clickMe"
+						   	   class="button search_button"
+							   :loading="loading"
+							   @click="_Func();q();"
+							   :disabled="loading"
+						   >
+						   SEARCH						  		
+						   </v-btn>	
+						   
+			   </form>
+			 
         </div>
 		</div>
+		
 		</div>
+		
 	</div>
 	</div>     
-<br><br><br><br>
-	<div v-if='show == true'>
-<div class="super_container">
+
+
+
+<!-- <div class="super_container"> -->
+		
 <div class="offers">
 		<div class="container">
+		<div v-if='loading == true'>
+		<div class="load"><img id="loading" src="/images/lod.png" ></div>
+	</div> 
+				<div v-if='show == true'>
 			<div class="row">
+				
 				<div class="col text-center">
 					<h2 class="section_title">offers</h2>
 				</div>
@@ -109,8 +128,10 @@
 							<div class="col-lg-6">
 								<div class="offers_content">
 									<div class="offers_price" >{{item.price}}€<span></span></div>
+									
 									<p class="offers_text"></p>
 									<p class="offers_text">Fly duration: {{item.fly_duration}} </p>
+									<p class="animation" img src="../images/blog_1.jpg" ></p>
 									<p class="offers_text">Airline: {{item.airlines}} </p>
 									<p class="offers_text">Availability: {{item.availability.seats}} </p>
 									<p class="offers_text">Bag price: 1:{{item.bags_price}} <br>  </p>
@@ -132,7 +153,7 @@
 	</div>
 </div>
 </div>
-</div>
+<!-- </div> -->
               
 </template>
 
@@ -157,14 +178,16 @@ export default {
 		a:'',
 		g:'',
 		value1: '',
-       
+        loading: false,
         air:[],
         show: false
     }
   },
  
   methods: {
+	  
     q(){
+		this.loading = true;
 		axios.get('https://api.skypicker.com/locations?term='+this.city1+'&locale=en-US&location_types=city&limit=10&active_only=true&sort=name')
 		.then((response) => {
 		let cityFrom = response.data.locations[0].code;
@@ -174,14 +197,19 @@ export default {
 			console.log(cityTo);
 			axios.get('https://api.skypicker.com/flights?fly_from='+cityFrom+'&fly_to='+cityTo+'&date_from='+this.value1[0]+'&return_from='+this.value1[1]+'&adults='+this.adults+'&children='+this.children+'&flight_type='+this.type+'&partner=picky'+this.g)
 			.then((response) => {
-			console.log(response.data);
+      			console.log(response.data);
 			this.flights =  response.data.data.slice(1, 30);
 			console.log(this.flights);
 			this.show = true;
+			this.loading = false;
 			})
-		})
+	// 		.catch(err => {
+    //     this.loading = false;
+    //     console.log(err);
+      })
 		})
 	},
+	
 	_Func() {
 		if (this.type === "round"){
 			this.g = '&nights_in_dst_from='+8+'&nights_in_dst_to='+8;
