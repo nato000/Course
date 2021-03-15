@@ -17,11 +17,11 @@
 						<form action="#" id="search_form_1" class="search_panel_content d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-between justify-content-start">
               <div class="search_item">
 								<div>from</div>
-								<input type="text" class="from search_input" placeholder="From" required="required" autocomplete="on" v-model="city1">
+								<input id="input_1" type="text" class="from search_input" placeholder="From" v-model="city1">
 							</div>
 							<div class="search_item">
 								<div>to</div>
-								<input type="text" class="to search_input" placeholder="To" required="required" autocomplete="on" v-model="city2">
+								<input id="input_2" type="text" class="to search_input" placeholder="To" v-model="city2">
 							</div>
 	
 							<div class="search_item">
@@ -42,7 +42,7 @@
 								<div>adults</div>
 								
 								<select name="adults" id="adults_1" class="dropdown_item_select search_input"  v-model="adults">
-									<option>0</option>
+									<option selected hidden>0</option>
 									<option>1</option>
 									<option>2</option>
 									<option>3</option>
@@ -55,7 +55,7 @@
 								<div>children</div>
 								
 								<select name="children" id="children_1" class="dropdown_item_select search_input" v-model="children">
-									<option>0</option>
+									<option selected hidden>0</option>
 									<option>1</option>
 									<option>2</option>
 									<option>3</option>
@@ -74,16 +74,10 @@
 								</select>
 								 <span id="r" v-bind="a"></span>
 							</div> 
-										              
-                				 
-               			<v-btn id="clickMe"
-						   	   class="button search_button"
-							   :loading="loading"
-							   @click="_Func();q();"
-							   :disabled="loading"
-						   >
-						   SEARCH						  		
-						   </v-btn>	
+							<div v-if='err == true'>		              
+                			<div class="search_item">{{errors}}</div>	 
+							</div>
+               		<input id="clickMe" class="button search_button" type="button" value="search" @click.prevent="checkForm($event);_Func();q();" />
 						   
 			   </form>
 			 
@@ -102,8 +96,8 @@
 <div class="offers">
 		<div class="container">
 		<div v-if='loading == true'>
-		<div class="load"><img id="loading" src="/images/lod.png" ></div>
-	</div> 
+			<div class="load"><img id="loading" src="/images/lod.png" ></div>
+		</div> 
 				<div v-if='show == true'>
 			<div class="row">
 				
@@ -131,7 +125,6 @@
 									
 									<p class="offers_text"></p>
 									<p class="offers_text">Fly duration: {{item.fly_duration}} </p>
-									<p class="animation" img src="../images/blog_1.jpg" ></p>
 									<p class="offers_text">Airline: {{item.airlines}} </p>
 									<p class="offers_text">Availability: {{item.availability.seats}} </p>
 									<p class="offers_text">Bag price: 1:{{item.bags_price}} <br>  </p>
@@ -157,7 +150,10 @@
               
 </template>
 
+
+
 <script>
+
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
@@ -170,14 +166,15 @@ export default {
         flights: [],
         city1:'',
         city2:'',
-        date1:'',
-        date2:'',
-		adults:'',
+       	adults:'',
 		children:'',
 		type:'',
+		errors:[],
 		a:'',
 		g:'',
 		value1: '',
+		err:'',
+		code:null,
         loading: false,
         air:[],
         show: false
@@ -185,9 +182,22 @@ export default {
   },
  
   methods: {
+
+	  checkForm:function(e){
+		  if(this.city1 && this.city2 && !this.value1 && this.type) return true;
+      this.errors = [];
+      if(!this.city1 || !this.city2 || !this.value1 || !this.type) {
+		  this.err = true, this.loading = false ,this.errors.push("Complete all fields");
+	  }	
+        else { 
+			this.err = false, this.loading = true;
+			};
+		e.preventDefault();
+		
+				
+	  },
 	  
-    q(){
-		this.loading = true;
+    q(){		
 		axios.get('https://api.skypicker.com/locations?term='+this.city1+'&locale=en-US&location_types=city&limit=10&active_only=true&sort=name')
 		.then((response) => {
 		let cityFrom = response.data.locations[0].code;
@@ -203,9 +213,7 @@ export default {
 			this.show = true;
 			this.loading = false;
 			})
-	// 		.catch(err => {
-    //     this.loading = false;
-    //     console.log(err);
+		
       })
 		})
 	},
@@ -219,12 +227,17 @@ export default {
 			this.g = '';
 			console.log(this.g);
 		}
-		}
+		},
+
+		
   },
   mounted() {
-// var select = document.querySelector('select')
-// select.addEventListener('change',_Func)
-// $("_Func").click(_Func);
+	//   new google.maps.places.Autocomplete(
+	// 	  document.getElementById("input_1")
+	//   )
+	//   new google.maps.places.Autocomplete(
+	// 	    document.getElementById("input_2")
+	//   )
   },
  
 } 
