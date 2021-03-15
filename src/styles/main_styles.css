@@ -1098,6 +1098,17 @@ section
 	text-transform: uppercase;
 	margin-bottom: 16px;
 }
+.error_alert
+{
+	position: absolute;
+    left: 9px;
+    bottom: 25px;
+    width: 150px;
+    height: 29px;
+    background: #00000026;
+    overflow: hidden;
+    color: #ffffffcc;
+}
 .dropdown_item_select
 {
 	-webkit-appearance:none;

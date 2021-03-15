@@ -75,7 +75,7 @@
 								 <span id="r" v-bind="a"></span>
 							</div> 
 							<div v-if='err == true'>		              
-                			<div class="search_item">{{errors}}</div>	 
+                			<div class="error_alert">{{this.errors}}</div>	 
 							</div>
                		<input id="clickMe" class="button search_button" type="button" value="search" @click.prevent="checkForm($event);_Func();q();" />
 						   
@@ -187,7 +187,7 @@ export default {
 		  if(this.city1 && this.city2 && !this.value1 && this.type) return true;
       this.errors = [];
       if(!this.city1 || !this.city2 || !this.value1 || !this.type) {
-		  this.err = true, this.loading = false ,this.errors.push("Complete all fields");
+		  this.err = true, this.loading = false ,this.errors.push('Complete all fields');
 	  }	
         else { 
 			this.err = false, this.loading = true;
