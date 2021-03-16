@@ -15,13 +15,13 @@
 					</div>
         <div class="search_panel active">
 						<form action="#" id="search_form_1" class="search_panel_content d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-between justify-content-start">
-              <div class="search_item">
+                <div class="search_item">
 								<div>from</div>
-								<input id="input_1" type="text" class="from search_input" placeholder="From" v-model="city1">
+								<input id="input_1" type="text" class="from search_input" placeholder="From" autocomplete="on" v-model="city1">
 							</div>
 							<div class="search_item">
 								<div>to</div>
-								<input id="input_2" type="text" class="to search_input" placeholder="To" v-model="city2">
+								<input id="input_2" type="text" class="to search_input" placeholder="To" autocomplete="on" v-model="city2">
 							</div>
 	
 							<div class="search_item">
@@ -38,7 +38,7 @@
 
 							</div>
 
-						 <div class="search_item">
+						    <div class="search_item">
 								<div>adults</div>
 								
 								<select name="adults" id="adults_1" class="dropdown_item_select search_input"  v-model="adults">
@@ -65,27 +65,24 @@
 								</select>
 							</div> 
 
-								 <div class="search_item">
-								<div>type</div>
+							<div class="search_item">
+							<div>type</div>
 								
 								<select name="type" id="Type" class="dropdown_item_select search_input" v-model="type">
 									<option value="round">round</option>
 									<option value="oneway">oneway</option>
 								</select>
-								 <span id="r" v-bind="a"></span>
+								<span id="r" v-bind="a"></span>
 							</div> 
 							<div v-if='err == true'>		              
                 			<div class="error_alert">{{this.errors}}</div>	 
 							</div>
                		<input id="clickMe" class="button search_button" type="button" value="search" @click.prevent="checkForm($event);_Func();q();" />
 						   
-			   </form>
-			 
+			   </form> 
         </div>
 		</div>
-		
 		</div>
-		
 	</div>
 	</div>     
 
@@ -95,12 +92,11 @@
 		
 <div class="offers">
 		<div class="container">
-		<div v-if='loading == true'>
-			<div class="load"><img id="loading" src="/images/lod.png" ></div>
-		</div> 
-				<div v-if='show == true'>
+			<div v-if='loading == true'>
+				<div class="load"><img id="loading" src="/images/lod.png" ></div>
+			</div> 
+			<div v-if='show == true'>
 			<div class="row">
-				
 				<div class="col text-center">
 					<h2 class="section_title">offers</h2>
 				</div>
@@ -134,26 +130,20 @@
 									<div class="button search_button"><a v-bind:href= "item.deep_link" >Buy</a>
 								
 									</div>
-									
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				
 			</div>
 		</div>
 	</div>
 </div>
 </div>
-<!-- </div> -->
               
 </template>
 
-
-
 <script>
-
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
@@ -187,14 +177,12 @@ export default {
 		  if(this.city1 && this.city2 && !this.value1 && this.type) return true;
       this.errors = [];
       if(!this.city1 || !this.city2 || !this.value1 || !this.type) {
-		  this.err = true, this.loading = false ,this.errors.push('Complete all fields');
+		  this.err = true, this.loading = false ,this.errors.push("Complete all fields");
 	  }	
         else { 
 			this.err = false, this.loading = true;
 			};
-		e.preventDefault();
-		
-				
+		e.preventDefault();		
 	  },
 	  
     q(){		
@@ -213,9 +201,8 @@ export default {
 			this.show = true;
 			this.loading = false;
 			})
-		
       })
-		})
+	 })
 	},
 	
 	_Func() {
