@@ -23,26 +23,48 @@
 								<div>to</div>
 								<input id="input_2" type="text" class="to search_input" placeholder="To" autocomplete="on" v-model="city2">
 							</div>
+
+							
 	
-							<div class="search_item">
-								<div>Date</div>
+							<div class="dpicker">
+								<div class="switch_pos">
+								<input type="checkbox" id="switch" @click="toggleCheckbox();" /><label class="switch" for="switch">Toggle</label>
+								</div>
+							<div v-if='check == true'>
+								<div class="round">
+
+									<div class="switch_name_1">Round</div>
 									<el-date-picker
-									v-model="value1"
+									v-model="value2"
 									type="daterange"
 									range-separator="To"
 									start-placeholder="Start date"
 									end-placeholder="End date"
 									format="dd/MM/yyyy"
       								value-format="dd/MM/yyyy">
-								</el-date-picker>
-
+									</el-date-picker>
+								</div>
+							</div>
+							<div v-if='check == false'>
+								<div class="oneway">
+								    <div class="switch_name_2">Oneway</div>
+									{{value1}}
+									<el-date-picker
+      								v-model="value1"
+      								type="date"
+      								placeholder="Pick a day"
+									format="dd/MM/yyyy"
+      								value-format="dd/MM/yyyy">
+    								</el-date-picker>
+									</div>
+							</div>
 							</div>
 
 						    <div class="search_item">
 								<div>adults</div>
 								
 								<select name="adults" id="adults_1" class="dropdown_item_select search_input"  v-model="adults">
-									<option selected hidden>0</option>
+									<option selected>0</option>
 									<option>1</option>
 									<option>2</option>
 									<option>3</option>
@@ -55,7 +77,7 @@
 								<div>children</div>
 								
 								<select name="children" id="children_1" class="dropdown_item_select search_input" v-model="children">
-									<option selected hidden>0</option>
+									<option selected>0</option>
 									<option>1</option>
 									<option>2</option>
 									<option>3</option>
@@ -65,21 +87,15 @@
 								</select>
 							</div> 
 
-							<div class="search_item">
-							<div>type</div>
-								
-								<select name="type" id="Type" class="dropdown_item_select search_input" v-model="type">
-									<option value="round">round</option>
-									<option value="oneway">oneway</option>
-								</select>
-								<span id="r" v-bind="a"></span>
-							</div> 
+							
+							
 							<div v-if='err == true'>		              
-                			<div class="error_alert">{{this.errors}}</div>	 
+                			<div class="error_alert">{{this.errors[0]}}</div>	 
 							</div>
-               		<input id="clickMe" class="button search_button" type="button" value="search" @click.prevent="checkForm($event);_Func();q();" />
-						   
-			   </form> 
+							
+               		<input id="clickMe" class="button search_button" type="button" value="search" @click.prevent="checkForm($event);q();" />
+
+				</form> 
         </div>
 		</div>
 		</div>
@@ -110,7 +126,8 @@
 						<div class="row">
 							<div class="col-lg-6">
 								<div class="offers_image_container">
-									<!-- Image by https://unsplash.com/@kensuarez -->
+									<!-- Image by https://unsplash.com/@kensuarez 
+									Bag price: 1 pc:{{item.bags_price[1]}} <br> 2 pcs:{{item.bags_price[2]}} -->
 									<div class="offers_image_background" style="background-image:url(images/offer_1.jpg)"></div>
 									<div class="offer_name"><a href="#">{{item.cityFrom}} -> {{item.cityTo}}</a></div>
 								</div>
@@ -121,13 +138,26 @@
 									
 									<p class="offers_text"></p>
 									<p class="offers_text">Fly duration: {{item.fly_duration}} </p>
-									<p class="offers_text">Airline: {{item.airlines}} </p>
-									<p class="offers_text">Availability: {{item.availability.seats}} </p>
-									<p class="offers_text">Bag price: 1:{{item.bags_price}} <br>  </p>
+									<p class="offers_text">Airline: {{item.airlines}}  </p>
+									<p class="offers_text">Availability: {{item.availability.seats}} seat(s) </p>
+									<p class="offers_text">
+										<table>
+											<tbody>
+												<tr>
+													<td>Bag price: </td>
+													<td> 1 pc: {{item.bags_price[1]}}</td>
+												</tr>
+												<tr>
+													<td></td>
+													<td> 2 pcs: {{item.bags_price[2]}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</p>
 									<div class="offers_icons">
 									
 									</div>
-									<div class="button search_button"><a v-bind:href= "item.deep_link" >Buy</a>
+									<div class="button search_button"><a v-bind:href= "item.deep_link" target="_blank">Buy</a>
 								
 									</div>
 								</div>
@@ -163,7 +193,11 @@ export default {
 		a:'',
 		g:'',
 		value1: '',
+		value2: '',
 		err:'',
+		checkbox:'',
+		check:'',
+		swType:'',
 		code:null,
         loading: false,
         air:[],
@@ -173,19 +207,41 @@ export default {
  
   methods: {
 
-	  checkForm:function(e){
-		  if(this.city1 && this.city2 && !this.value1 && this.type) return true;
-      this.errors = [];
-      if(!this.city1 || !this.city2 || !this.value1 || !this.type) {
-		  this.err = true, this.loading = false ,this.errors.push("Complete all fields");
-	  }	
-        else { 
-			this.err = false, this.loading = true;
-			};
-		e.preventDefault();		
-	  },
-	  
-    q(){		
+	checkForm:function(e){
+	  if(this.city1 && this.city2 && !this.value1) return true;
+      	 this.errors = [];
+       	if(!this.city1 || !this.city2 || !this.value1) 
+	   		{
+	    		this.loading = false 
+				alert("Complete all fields")
+	    	}	
+         else 
+	  	{ 
+	  		 this.loading = true;
+	  	};
+	  e.preventDefault();		
+	},
+
+	toggleCheckbox() {
+      this.checkbox = !this.checkbox
+      this.$emit('setCheckboxVal', this.checkbox)
+	  	if (this.checkbox === false)
+	  		{
+				// this.swType = null
+				this.swType = '&date_from='+this.value1+'&date_to='+this.value1+'&flight_type=oneway';
+	  			this.check = false;
+	  		}
+	 	else if (this.checkbox === true)
+	  		{
+				// this.swType = null
+				this.swType = '&date_from='+this.value2[0]+'&return_from='+this.value2[1]+'&date_to='+this.value2[0]+'&return_to='+this.value2[1]+'&flight_type=round';
+				this.check = true;
+			}
+    },
+		
+    q(){	
+		console.log(this.value1);	
+		console.log(this.value2);
 		axios.get('https://api.skypicker.com/locations?term='+this.city1+'&locale=en-US&location_types=city&limit=10&active_only=true&sort=name')
 		.then((response) => {
 		let cityFrom = response.data.locations[0].code;
@@ -193,31 +249,21 @@ export default {
 		.then((response) => {
 			let cityTo = response.data.locations[0].code;
 			console.log(cityTo);
-			axios.get('https://api.skypicker.com/flights?fly_from='+cityFrom+'&fly_to='+cityTo+'&date_from='+this.value1[0]+'&return_from='+this.value1[1]+'&adults='+this.adults+'&children='+this.children+'&flight_type='+this.type+'&partner=picky'+this.g)
+			axios.get('https://api.skypicker.com/flights?fly_from='+cityFrom+'&fly_to='+cityTo+this.swType+'&adults='+this.adults+'&children='+this.children+'&partner=picky')
 			.then((response) => {
       			console.log(response.data);
 			this.flights =  response.data.data.slice(1, 30);
 			console.log(this.flights);
 			this.show = true;
 			this.loading = false;
+			
 			})
       })
 	 })
 	},
 	
-	_Func() {
-		if (this.type === "round"){
-			this.g = '&nights_in_dst_from='+8+'&nights_in_dst_to='+8;
-			console.log(this.g);
-		}
-		else {
-			this.g = '';
-			console.log(this.g);
-		}
-		},
 
-		
-  },
+
   mounted() {
 	//   new google.maps.places.Autocomplete(
 	// 	  document.getElementById("input_1")
@@ -227,5 +273,7 @@ export default {
 	//   )
   },
  
-} 
+  }
+  }
+
 </script>

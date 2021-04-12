@@ -9,6 +9,7 @@ import VueAxios from 'vue-axios'
 import './styles/datepicker.css'
 import './styles/unpkg.css'
 import './styles/anim.css'
+import './styles/switch.css'
 import elementLocale from 'element-ui/lib/locale/lang/en';
 
 
