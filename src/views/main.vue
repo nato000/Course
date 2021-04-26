@@ -138,7 +138,7 @@
 									
 									<p class="offers_text"></p>
 									<p class="offers_text">Fly duration: {{item.fly_duration}} </p>
-									<p class="offers_text">Airline: {{item.airlines}}  </p>
+									<p class="offers_text">Airline:<img airLane  ></p>
 									<p class="offers_text">Availability: {{item.availability.seats}} seat(s) </p>
 									<p class="offers_text">
 										<table>
@@ -198,6 +198,7 @@ export default {
 		checkbox:'',
 		check:'',
 		swType:'',
+		airLane:'',
 		code:null,
         loading: false,
         air:[],
@@ -227,13 +228,13 @@ export default {
       this.$emit('setCheckboxVal', this.checkbox)
 	  	if (this.checkbox === false)
 	  		{
-				// this.swType = null
+				this.swType = null
 				this.swType = '&date_from='+this.value1+'&date_to='+this.value1+'&flight_type=oneway';
 	  			this.check = false;
 	  		}
 	 	else if (this.checkbox === true)
 	  		{
-				// this.swType = null
+				this.swType = null
 				this.swType = '&date_from='+this.value2[0]+'&return_from='+this.value2[1]+'&date_to='+this.value2[0]+'&return_to='+this.value2[1]+'&flight_type=round';
 				this.check = true;
 			}
@@ -249,9 +250,28 @@ export default {
 		.then((response) => {
 			let cityTo = response.data.locations[0].code;
 			console.log(cityTo);
-			axios.get('https://api.skypicker.com/flights?fly_from='+cityFrom+'&fly_to='+cityTo+this.swType+'&adults='+this.adults+'&children='+this.children+'&partner=picky')
+				if (this.checkbox === false)
+	  		{
+				this.swType = null
+				this.swType = '&date_from='+this.value1+'&date_to='+this.value1+'&flight_type=oneway';
+	  			this.check = false;
+	  		}
+	 	else if (this.checkbox === true)
+	  		{
+				this.swType = null
+				this.swType = '&date_from='+this.value2[0]+'&return_from='+this.value2[1]+'&date_to='+this.value2[0]+'&return_to='+this.value2[1]+'&flight_type=round';
+				this.check = true;
+			}
+			axios.get('https://tequila-api.kiwi.com/v2/search?fly_from='+cityFrom+'&fly_to='+cityTo+this.swType+'&adults='+this.adults+'&children='+this.children+'&apikey=xIQNuKsL0SichgTkWbmBQjGSF0YRSdC_')
 			.then((response) => {
+				let airLane = this.airlines;
       			console.log(response.data);
+				  axios.get('https://images.kiwi.com/airlines/32x32/'+airLane+'.png')
+				  .then((response) => {
+					
+					  console.log(response.data);
+				  })
+
 			this.flights =  response.data.data.slice(1, 30);
 			console.log(this.flights);
 			this.show = true;
