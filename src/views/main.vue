@@ -48,7 +48,7 @@
 							<div v-if='check == false'>
 								<div class="oneway">
 								    <div class="switch_name_2">Oneway</div>
-									{{value1}}
+									
 									<el-date-picker
       								v-model="value1"
       								type="date"
@@ -138,7 +138,7 @@
 									
 									<p class="offers_text"></p>
 									<p class="offers_text">Fly duration: {{item.fly_duration}} </p>
-									<p class="offers_text">Airline:<img airLane  ></p>
+									<p class="offers_text">Airline:{{item.route.airline}}</p>
 									<p class="offers_text">Availability: {{item.availability.seats}} seat(s) </p>
 									<p class="offers_text">
 										<table>
@@ -209,9 +209,9 @@ export default {
   methods: {
 
 	checkForm:function(e){
-	  if(this.city1 && this.city2 && !this.value1) return true;
+	  if(this.city1 && this.city2 && !this.value1 ) return true;
       	 this.errors = [];
-       	if(!this.city1 || !this.city2 || !this.value1) 
+       	if(!this.city1 || !this.city2 || !this.value1 ) 
 	   		{
 	    		this.loading = false 
 				alert("Complete all fields")
@@ -243,6 +243,7 @@ export default {
     q(){	
 		console.log(this.value1);	
 		console.log(this.value2);
+		
 		axios.get('https://api.skypicker.com/locations?term='+this.city1+'&locale=en-US&location_types=city&limit=10&active_only=true&sort=name')
 		.then((response) => {
 		let cityFrom = response.data.locations[0].code;
@@ -264,8 +265,8 @@ export default {
 			}
 			axios.get('https://tequila-api.kiwi.com/v2/search?fly_from='+cityFrom+'&fly_to='+cityTo+this.swType+'&adults='+this.adults+'&children='+this.children+'&apikey=xIQNuKsL0SichgTkWbmBQjGSF0YRSdC_')
 			.then((response) => {
-				let airLane = this.airlines;
-      			console.log(response.data);
+				let airLane = response.data.data[9].airlines;
+      			console.log(airLane);
 				  axios.get('https://images.kiwi.com/airlines/32x32/'+airLane+'.png')
 				  .then((response) => {
 					
