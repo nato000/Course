@@ -61,6 +61,7 @@
 
 				<div class="search_item">
 					<div>adults</div>
+		
 					<select name="adults" id="adults_1" class="dropdown_item_select search_input"  v-model="adults">
 						<option selected>0</option>
 						<option>1</option>
@@ -134,21 +135,28 @@
 						
 						<p class="offers_text"></p>
 						<p class="offers_text">Fly duration: {{item.fly_duration}} </p>
-						<p class="offers_text">Airline:{{item.route.airline}}</p>
+						<p class="offers_text">Airline:
+						<!-- <ul>
+ 							<li v-for="item in images" :key="item.id">
+   							 {{ item.id }}
+  							</li>
+						</ul> -->
+						</p>
+
 						<p class="offers_text">Availability: {{item.availability.seats}} seat(s) </p>
 						<p class="offers_text">
-							<table>
-								<tbody>
-									<tr>
-										<td>Bag price: </td>
-										<td> 1 pc: {{item.bags_price[1]}}</td>
-									</tr>
-									<tr>
-										<td></td>
-										<td> 2 pcs: {{item.bags_price[2]}}</td>
-									</tr>
-								</tbody>
-							</table>
+						<table>
+							<tbody>
+								<tr>
+									<td>Bag price: </td>
+									<td> 1 pc: {{item.bags_price[1]}}</td>
+								</tr>
+								<tr>
+									<td></td>
+									<td> 2 pcs: {{item.bags_price[2]}}</td>
+								</tr>
+							</tbody>
+						</table>
 						</p>
 						<div class="offers_icons">
 						
@@ -194,11 +202,12 @@ export default {
 		checkbox:'',
 		check:'',
 		swType:'',
-		airLane:'',
 		visible: true,
 		code:null,
         loading: false,
-        air:[],
+		logo: [],
+        images: [],
+		air:[],
         show: false
     }
   },
@@ -244,10 +253,11 @@ export default {
 		axios.get('https://api.skypicker.com/locations?term='+this.city1+'&locale=en-US&location_types=city&limit=10&active_only=true&sort=name')
 		.then((response) => {
 		let cityFrom = response.data.locations[0].code;
+		console.log("city1 code ok");
 		axios.get('https://api.skypicker.com/locations?term='+this.city2+'&locale=en-US&location_types=city&limit=10&active_only=true&sort=name')
 		.then((response) => {
 			let cityTo = response.data.locations[0].code;
-			console.log(cityTo);
+			console.log("city2 code ok");
 		if (this.checkbox === false)
 	 	 	{
 				this.swType = null
@@ -260,15 +270,11 @@ export default {
 			}
 			axios.get('https://tequila-api.kiwi.com/v2/search?fly_from='+cityFrom+'&fly_to='+cityTo+this.swType+'&adults='+this.adults+'&children='+this.children+'&apikey=xIQNuKsL0SichgTkWbmBQjGSF0YRSdC_')
 			.then((response) => {
-				let airLane = response.data.data[9].airlines[0];
-      			console.log(airLane);
-				  axios.get('https://images.kiwi.com/airlines/32x32/'+airLane+'.png')
-				  .then((response) => {
-					
-					  console.log(response.data);
-				  })
+				console.log("search get ok");
+				this.images.push(response.data.data.route);
+				console.log(this.images);
 
-			this.flights =  response.data.data.slice(1, 30);
+			this.flights =  response.data.data.slice(0, 30);
 			console.log(this.flights);
 			this.show = true;
 			this.loading = false;
