@@ -32,7 +32,7 @@
 								<!-- <div v-show="visible"> 
 									 v-on:click="visible=!visible"-->
 						<div class="round">
-							<div class="switch_name_1">Round</div>
+							<div class="switch_name_1">Return</div>
 							<el-date-picker
 							v-model="value2"
 							type="daterange"
@@ -124,7 +124,7 @@
 				<div class="col-lg-6">
 					<div class="offers_image_container">
 						<!-- Image by https://unsplash.com/@kensuarez 
-						Bag price: 1 pc:{{item.bags_price[1]}} <br> 2 pcs:{{item.bags_price[2]}} -->
+						 -->
 						<div class="offers_image_background" style="background-image:url(images/offer_1.jpg)"></div>
 						<div class="offer_name"><a href="#">{{item.cityFrom}} -> {{item.cityTo}}</a></div>
 					</div>
@@ -135,14 +135,10 @@
 						
 						<p class="offers_text"></p>
 						<p class="offers_text">Fly duration: {{item.fly_duration}} </p>
-						<p class="offers_text">Airline:
-						<!-- <ul>
- 							<li v-for="item in images" :key="item.id">
-   							 {{ item.id }}
-  							</li>
-						</ul> -->
+						<p class="offers_text">Airline: <img src="https://images.kiwi.com/airlines/32x32/FR.png" alt="">		
+						
 						</p>
-
+						
 						<p class="offers_text">Availability: {{item.availability.seats}} seat(s) </p>
 						<p class="offers_text">
 						<table>
@@ -268,11 +264,21 @@ export default {
 				this.swType = null
 				this.swType = '&date_from='+this.value2[0]+'&return_from='+this.value2[1]+'&date_to='+this.value2[0]+'&return_to='+this.value2[1]+'&flight_type=round';
 			}
-			axios.get('https://tequila-api.kiwi.com/v2/search?fly_from='+cityFrom+'&fly_to='+cityTo+this.swType+'&adults='+this.adults+'&children='+this.children+'&apikey=xIQNuKsL0SichgTkWbmBQjGSF0YRSdC_')
-			.then((response) => {
+			axios.get('https://tequila-api.kiwi.com/v2/search?fly_from='+cityFrom+'&fly_to='+cityTo+this.swType+'&adults='+this.adults+'&children='+this.children,
+						{
+							headers: {
+							'apikey': 'xIQNuKsL0SichgTkWbmBQjGSF0YRSdC_',
+							}
+						}
+					)
+				.then((response) => {
 				console.log("search get ok");
-				this.images.push(response.data.data.route);
-				console.log(this.images);
+				// console.log(response.data.data[0].airlines);
+				// this.images.push(response.data.data[0].airlines.slice(0, 30));
+				// this.images = response.data.data.airlines
+			  	// this.images = this.data.data.map(dataSet => dataSet[0].airlines);
+				// console.log(this.images);
+				
 
 			this.flights =  response.data.data.slice(0, 30);
 			console.log(this.flights);
