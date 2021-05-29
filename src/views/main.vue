@@ -135,7 +135,7 @@
 						
 						<p class="offers_text"></p>
 						<p class="offers_text">Fly duration: {{item.fly_duration}} </p>
-						<p class="offers_text">Airline: <img src="https://images.kiwi.com/airlines/32x32/FR.png" alt="">		
+						<p class="offers_text">Airline: <img :src="`https://images.kiwi.com/airlines/32x32/${item.airlines[0]}.png`" alt="">		
 						
 						</p>
 						
@@ -267,7 +267,8 @@ export default {
 			axios.get('https://tequila-api.kiwi.com/v2/search?fly_from='+cityFrom+'&fly_to='+cityTo+this.swType+'&adults='+this.adults+'&children='+this.children,
 						{
 							headers: {
-							'apikey': 'xIQNuKsL0SichgTkWbmBQjGSF0YRSdC_',
+							// 'apikey': 'xIQNuKsL0SichgTkWbmBQjGSF0YRSdC_',
+							'apikey': 'jXj7GghihEr_64qu8qEBo6FjDLbmGePf',
 							}
 						}
 					)
