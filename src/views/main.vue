@@ -26,11 +26,11 @@
 
 				<div class="dpicker">
 					<div class="switch_pos">
-						<input type="checkbox" id="switch" @click="toggleCheckbox();" /><label class="switch" for="switch">Toggle</label>
+						<input type="checkbox" id="switch" v-on:click="visible=!visible" @click="toggleCheckbox();" /><label class="switch" for="switch">Toggle</label>
 					</div>
-					<div v-if='check == true'>
-								<!-- <div v-show="visible"> 
-									 v-on:click="visible=!visible"-->
+					<!-- <div v-if='check == true'> -->
+								<div v-show="!visible"> 
+									 <!-- v-on:click="visible=!visible" -->
 						<div class="round">
 							<div class="switch_name_1">Return</div>
 							<el-date-picker
@@ -44,8 +44,8 @@
 							</el-date-picker>
 						</div>
 					</div>
-					<div v-if='check == false'>
-						<!-- <div v-show="!visible"> -->
+					<!-- <div v-if='check == false'> -->
+						<div v-show="visible">
 						<div class="oneway">
 						    <div class="switch_name_2">Oneway</div>
 							<el-date-picker
@@ -134,11 +134,14 @@
 						<div class="offers_price" >{{item.price}}€<span></span></div>
 						
 						<p class="offers_text"></p>
+						<ul class="offer_text">
+							<li>local time arrival - {{item.local_arrival[8,9,5,6]}}</li>
+							<li>utc time arrival - {{item.utc_arrival}}</li>
+							<li>local time departure - {{item.local_departure}}</li>
+							<li>utc time departure - {{item.utc_departure}}</li>
+						</ul>
 						<p class="offers_text">Fly duration: {{item.fly_duration}} </p>
-						<p class="offers_text">Airline: <img :src="`https://images.kiwi.com/airlines/32x32/${item.airlines[0]}.png`" alt="">		
-						
-						</p>
-						
+						<p class="offers_text">Airline: <img :src="`https://images.kiwi.com/airlines/32x32/${item.airlines[0]}.png`" alt="">								
 						<p class="offers_text">Availability: {{item.availability.seats}} seat(s) </p>
 						<p class="offers_text">
 						<table>
@@ -211,9 +214,9 @@ export default {
   methods: {
 
 	checkForm:function(e){
-	  if(this.city1 && this.city2 && !this.value1 ) return true;
+	  if(this.city1 && this.city2 && ((!this.value1 && this.value2) || (this.value1 && !this.value2))) return true;
       	 this.errors = [];
-       	if(!this.city1 || !this.city2 || !this.value1 ) 
+       	if(!this.city1 || !this.city2 || !this.value1 || !this.value2 ) 
 	   		{
 	    		this.loading = false 
 				alert("Complete all fields")
