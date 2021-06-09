@@ -28,7 +28,7 @@
 					<div class="switch_pos">
 						<input type="checkbox" id="switch" @click="toggleCheckbox();" /><label class="switch" for="switch">Toggle</label>
 					</div>
-					<div v-if='check == true'>
+					<div v-show='check == true'>
 								<!-- <div v-show="visible"> 
 									 v-on:click="visible=!visible"-->
 						<div class="round">
@@ -44,7 +44,7 @@
 							</el-date-picker>
 						</div>
 					</div>
-					<div v-if='check == false'>
+					<div v-show='check == false'>
 						<!-- <div v-show="!visible"> -->
 						<div class="oneway">
 						    <div class="switch_name_2">Oneway</div>
@@ -180,7 +180,6 @@ import VueAxios from 'vue-axios'
 import Vuex from 'vuex'
 
 export default {
-  name: 'main',
   data() {
     return{
         flights: [],
@@ -195,7 +194,7 @@ export default {
 		value1: '',
 		value2: '',
 		err:'',
-		checkbox:'',
+		checkbox:false,
 		check:'',
 		swType:'',
 		visible: true,
@@ -228,6 +227,7 @@ export default {
 	toggleCheckbox() {
       this.checkbox = !this.checkbox
       this.$emit('setCheckboxVal', this.checkbox)
+	  alert(this.value1)
 	  	if (this.checkbox === false)
 	  		{
 				this.swType = null
@@ -250,17 +250,20 @@ export default {
 		.then((response) => {
 		let cityFrom = response.data.locations[0].code;
 		console.log("city1 code ok");
+		alert(this.checkbox);
 		axios.get('https://api.skypicker.com/locations?term='+this.city2+'&locale=en-US&location_types=city&limit=10&active_only=true&sort=name')
 		.then((response) => {
 			let cityTo = response.data.locations[0].code;
 			console.log("city2 code ok");
 		if (this.checkbox === false)
 	 	 	{
+				  alert("1")
 				this.swType = null
 				this.swType = '&date_from='+this.value1+'&date_to='+this.value1+'&flight_type=oneway';
 	  		}
 	 	else if (this.checkbox === true)
 	  		{
+				  alert("2")
 				this.swType = null
 				this.swType = '&date_from='+this.value2[0]+'&return_from='+this.value2[1]+'&date_to='+this.value2[0]+'&return_to='+this.value2[1]+'&flight_type=round';
 			}

@@ -20,7 +20,6 @@ Vue.use(VueRouter, VueAxios, axios)
 
 new Vue({
   render: h => h(App),
-  el: '#app',
   router
 })
 .$mount('#app')
