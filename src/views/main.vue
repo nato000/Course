@@ -311,22 +311,34 @@ export default {
 
   methods: {
     checkForm: function(e) {
-      if (
-        this.city1 &&
-        this.city2 &&
-        ((!this.value1 && this.value2) || (this.value1 && !this.value2))
-      )
-        return true;
+      if (this.city1 && this.city2 && !this.value1 && this.value2) return true;
       {
         this.loading = true;
       }
       this.errors = [];
-      if (!this.city1 || !this.city2 || !this.value1 || !this.value2) {
-        this.loading = false;
-        alert("Complete all fields");
-      } else {
+      if (this.city1 && this.city2 && this.value1 && !this.value2) return true;
+      {
         this.loading = true;
       }
+      this.errors = [];
+
+      if (!this.city1) {
+        this.loading = false;
+        alert("Complete From field");
+      }
+      if (!this.city2) {
+        this.loading = false;
+        alert("Complete To field");
+      }
+      if (!this.value1 && this.value2) {
+        this.loading = false;
+        alert("Complete Date field");
+      }
+      if (this.value1 && !this.value2) {
+        this.loading = false;
+        alert("Complete Date field");
+      }
+
       e.preventDefault();
     },
 
